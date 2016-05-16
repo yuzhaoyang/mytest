@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 /**
  * 同步辅助类:完成一组线程执行前,使得一个或多个线程一直等待
  *
- * Created by bysocket on 16/4/26.
+ * Created by yzy.
  */
 public class CountDownLatchT {
 
