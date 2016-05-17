@@ -12,70 +12,45 @@ public class CountDownLatchT {
 
     // 线程中止的计数器
     private final static int COUNT = 10;
-    private final static CountDownLatch latch = new CountDownLatch(COUNT+1);
+    private final static CountDownLatch latch = new CountDownLatch(COUNT);
 
     // 线程池
     private final static ExecutorService pool = Executors.newFixedThreadPool(5);
-    
-    private final static CompletionService  service = new ExecutorCompletionService(pool);
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException
-    {
-
-        for (int i=0;i< COUNT;i++,latch.countDown()){
-
-            service.submit(new MyCallableThread(latch));
-
-        }
-
-        latch.countDown();
-
-        System.out.print("一声令下,开始执行");
+    public static void main(String[] args) throws InterruptedException {
 
         for (int i = 0; i < COUNT; i++) {
 
-            Object o = service.take().get();
+            pool.execute(new Runnable() {
 
-            System.out.println("值分别为"+o);
+                @Override
+                public void run() {
+                    try {
+                        int time = new Random().nextInt(2000);
+                        Thread.sleep(time);
+                        System.out.printf("Thread %s ## 耗时:%d\n", Thread.currentThread().getId(), time);
 
+                        // 线程结束后,计数器减一
+                        latch.countDown();
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
         }
-        
-        if (null != pool){
-            
-            pool.shutdown();
-            
-        }
-        
+
+        System.out.println("主线程一直被阻塞,直到latch为0,实现线程同步");
+        latch.await();
+        System.out.println("主线程恢复执行,此时做任务的线程,都已完毕");
+
+        pool.shutdown();
+
+
 
     }
 }
 
 
-class MyCallableThread implements Callable<Integer>{
-
-
-    private CountDownLatch latch;
-
-    public MyCallableThread(CountDownLatch latch) {
-        this.latch = latch;
-    }
-
-
-    @Override
-    public Integer call() throws Exception {
-        try {
-            //每个线程都等待
-
-            latch.await();
-
-        } catch (Exception e) {
-            // 执行错误了，也设置
-        }
-
-        Integer i = Integer.valueOf(new Random().nextInt());
-
-        return i ;
-    }
-
-}
 
