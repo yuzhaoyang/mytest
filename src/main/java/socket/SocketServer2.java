@@ -6,17 +6,13 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.BasicConfigurator;
+
 
 public class SocketServer2 {
 
-    static {
-        BasicConfigurator.configure();
-    }
 
-    private static final Log LOGGER = LogFactory.getLog(SocketServer2.class);
+
+
 
     public static void main(String[] args) throws Exception{
         ServerSocket serverSocket = new ServerSocket(83);
@@ -30,7 +26,7 @@ public class SocketServer2 {
                 new Thread(socketServerThread).start();
             }
         } catch(Exception e) {
-            SocketServer2.LOGGER.error(e.getMessage(), e);
+
         } finally {
             if(serverSocket != null) {
                 serverSocket.close();
@@ -46,10 +42,7 @@ public class SocketServer2 {
  */
 class SocketServerThread implements Runnable {
 
-    /**
-     * 日志
-     */
-    private static final Log LOGGER = LogFactory.getLog(SocketServerThread.class);
+
 
     private Socket socket;
 
@@ -75,12 +68,14 @@ class SocketServerThread implements Runnable {
             String message = new String(contextBytes , 0 , realLen);
 
             //下面打印信息
-            SocketServerThread.LOGGER.info("服务器收到来自于端口：" + sourcePort + "的信息：" + message);
+            System.out.println("服务器收到来自于端口：" + sourcePort + "的信息：" + message);
 
             //下面开始发送信息
             out.write("回发响应信息！".getBytes());
         } catch(Exception e) {
-            SocketServerThread.LOGGER.error(e.getMessage(), e);
+
+
+            System.out.println(e);
         } finally {
             //试图关闭
             try {
@@ -94,7 +89,7 @@ class SocketServerThread implements Runnable {
                     this.socket.close();
                 }
             } catch (IOException e) {
-                SocketServerThread.LOGGER.error(e.getMessage(), e);
+                System.out.println(e);
             }
         }
     }

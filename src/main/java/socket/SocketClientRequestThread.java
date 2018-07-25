@@ -6,9 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.BasicConfigurator;
+
 
 /**
  * 一个SocketClientRequestThread线程模拟一个客户端请求。
@@ -16,14 +14,8 @@ import org.apache.log4j.BasicConfigurator;
  */
 public class SocketClientRequestThread implements Runnable {
 
-    static {
-        BasicConfigurator.configure();
-    }
 
-    /**
-     * 日志
-     */
-    private static final Log LOGGER = LogFactory.getLog(SocketClientRequestThread.class);
+
 
     private CountDownLatch countDownLatch;
 
@@ -62,7 +54,7 @@ public class SocketClientRequestThread implements Runnable {
             clientRequest.flush();
 
             //在这里等待，直到服务器返回信息
-            SocketClientRequestThread.LOGGER.info("第" + this.clientIndex + "个客户端的请求发送完成，等待服务器返回信息");
+            System.out.println("第" + this.clientIndex + "个客户端的请求发送完成，等待服务器返回信息");
             int maxLen = 1024;
             byte[] contextBytes = new byte[maxLen];
             int realLen;
@@ -71,9 +63,9 @@ public class SocketClientRequestThread implements Runnable {
             while((realLen = clientResponse.read(contextBytes, 0, maxLen)) != -1) {
                 message += new String(contextBytes , 0 , realLen);
             }
-            SocketClientRequestThread.LOGGER.info("接收到来自服务器的信息:" + message);
+            System.out.println("接收到来自服务器的信息:" + message);
         } catch (Exception e) {
-            SocketClientRequestThread.LOGGER.error(e.getMessage(), e);
+            System.out.println(e);
         } finally {
             try {
                 if(clientRequest != null) {
@@ -83,7 +75,7 @@ public class SocketClientRequestThread implements Runnable {
                     clientResponse.close();
                 }
             } catch (IOException e) {
-                SocketClientRequestThread.LOGGER.error(e.getMessage(), e);
+                System.out.println(e);
             }
         }
     }
