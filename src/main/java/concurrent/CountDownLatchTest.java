@@ -8,7 +8,7 @@ import java.util.concurrent.*;
  *
  * Created by yzy.
  */
-public class CountDownLatchT {
+public class CountDownLatchTest {
 
     // 线程中止的计数器
     private final static int COUNT = 10;

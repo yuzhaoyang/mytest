@@ -10,7 +10,7 @@ public class ThreadPoolInterfaceImpl implements ThreadPoolInterface  {
     private  static volatile Integer workNum = 100;
 
     //任务队列
-    private static LinkedBlockingQueue<Runnable>  taskQueue = new LinkedBlockingQueue<>();
+    private static LinkedBlockingQueue<Runnable>  taskQueue = new LinkedBlockingQueue<Runnable>();
 
     static AtomicInteger count = new AtomicInteger(0);
 
