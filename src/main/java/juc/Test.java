@@ -13,7 +13,7 @@ public class Test {
 
          Runnable run = new Runnable() {
 
-                @Override
+
                 public void run() {
 
                     System.out.println("当前执行任务的线程名称"+ Thread.currentThread() + "---------");
@@ -31,6 +31,8 @@ public class Test {
 
         Long endTime = System.currentTimeMillis();
         System.out.println("耗时："+(endTime-starTime));
+
+
 
     }
 
